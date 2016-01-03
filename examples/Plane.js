@@ -91,6 +91,7 @@ myState.create = function(){
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
+	this.yell.play();
 
 }
 myState.update = function(){
@@ -300,7 +301,6 @@ var Explosion = function (state, x, y){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures['explosion'], x, y);
 	this.animation.add('explode', [0, 1, 2, 3, 4], 0.1, false);    
 	this.animation.play('explode');
-	this.yell.play();
 	//console.log('explode');
 
 	Explosion.prototype.update = function(){
