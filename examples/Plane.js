@@ -136,6 +136,7 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
+				this.yell.play('default', true);
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x -30, missiles[j].y-70));
 				missiles[j].destroy();
 				break;
@@ -300,7 +301,6 @@ var Explosion = function (state, x, y){
 	this.animation.add('explode', [0, 1, 2, 3, 4], 0.1, false);    
 	this.animation.play('explode');
 	//console.log('explode');
-	myState.yell.play();
 
 	Explosion.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
