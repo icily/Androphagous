@@ -41,9 +41,8 @@ myState.create = function(){
 	
 	/////////////////////////
 	//Timers for enemy spawns
-	this.timer = this.game.time.clock.createTimer('spawnTroop', .3, -1, true);
+	this.timer = this.game.time.clock.createTimer('spawnTroop', .2, -1, true);
 	this.timerEvent = this.timer.createTimerEvent(Kiwi.Time.TimerEvent.TIMER_COUNT, this.spawnMissile, this);
-
 
 	this.pauseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['pauseImage'], 0, 0);
 
@@ -105,10 +104,11 @@ myState.update = function(){
 		this.plane.x = (this.control.hands[0].posX* 1.7) + 400;
 		this.plane.y =((-1 * this.control.hands[0].posY)*1.7) + 600;
 
+	//手細節effect
 	// this.plane.scaleX = this.control.hands[0].posZ /250;
 	// this.plane.scaleY = this.control.hands[0].posZ / 250;
-
 	// this.plane.rotation = -1 * (this.control.hands[0].palmNormalX);
+	///
 
 	if(this.game.input.isDown){
 		//console.log(this.control.currentHand);
@@ -166,42 +166,42 @@ myState.spawnMissile = function(){
 myState.updateParallax = function(){
 	//Ground
 	for(var i =0; i < this.grassGroup.members.length;i++){
-		this.grassGroup.members[i].transform.x -= 6;		
+		this.grassGroup.members[i].transform.x -= 10;		
 		if(this.grassGroup.members[i].transform.worldX <= -48){
 			this.grassGroup.members[i].transform.x = 48*19;
 		}
 	}
 	//bg1
 	for(var i =0; i < this.bg1.members.length;i++){
-		this.bg1.members[i].transform.x -= 6;		
+		this.bg1.members[i].transform.x -= 10;		
 		if(this.bg1.members[i].transform.worldX <= -460){
 			this.bg1.members[i].transform.x = 460* (this.bg1.members.length - 1) ;
 		}
 	}
 	//bg2
 	for(var i =0; i < this.bg2.members.length;i++){
-		this.bg2.members[i].transform.x -= 4;		
+		this.bg2.members[i].transform.x -= 8;		
 		if(this.bg2.members[i].transform.worldX <= -460){
 			this.bg2.members[i].transform.x = 460*(this.bg2.members.length - 1);
 		}
 	}
 	//bg3
 	for(var i =0; i < this.bg3.members.length;i++){
-		this.bg3.members[i].transform.x -= 3;		
+		this.bg3.members[i].transform.x -= 6;		
 		if(this.bg3.members[i].transform.worldX <= -460){
 			this.bg3.members[i].transform.x = 460*(this.bg3.members.length - 1);
 		}
 	}
 	//bg4
 	for(var i =0; i < this.bg4.members.length;i++){
-		this.bg4.members[i].transform.x -= 1;
+		this.bg4.members[i].transform.x -= 4;
 		if(this.bg4.members[i].transform.worldX <= -96){
 			this.bg4.members[i].transform.x = 96*(this.bg4.members.length - 1);
 		}
 	}
 	//bg5
 	for(var i =0; i < this.bg4.members.length;i++){
-		this.bg5.members[i].transform.x -= 0.5;		
+		this.bg5.members[i].transform.x -= 3;		
 		if(this.bg5.members[i].transform.worldX <= -96){
 			this.bg5.members[i].transform.x = 96*(this.bg5.members.length - 1);
 		}
@@ -209,7 +209,7 @@ myState.updateParallax = function(){
 	
 	//bg7
 	for(var i =0; i < this.bg7.members.length;i++){
-		this.bg7.members[i].transform.x -= .25;		
+		this.bg7.members[i].transform.x -= 2;		
 		if(this.bg7.members[i].transform.worldX <= -434){
 			this.bg7.members[i].transform.x = 434*(this.bg7.members.length - 1);
 		}
@@ -264,7 +264,7 @@ Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 var EnemyMissile = function (state, x, y){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
 
-	this.animation.add('walk', [0,1], 0.1, true);    
+	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true);    
 	this.animation.play('walk');
 
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(50, 34, 50, 84);	
@@ -276,8 +276,8 @@ var EnemyMissile = function (state, x, y){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
 		this.physics.update();
 
-
-		this.x -= 10;
+		//速度
+		this.x -= 5;
 		
 
 		if(this.health <= 0){
@@ -297,8 +297,8 @@ Kiwi.extend(EnemyMissile,Kiwi.GameObjects.Sprite);
 
 
 var Explosion = function (state, x, y){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures['explosion'], x, y);
-	this.animation.add('explode', [0, 1, 2, 3, 4], 0.1, false);    
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
+	this.animation.add('explode', [7,8,9,10,11,12,13], 0.1, false);    
 	this.animation.play('explode');
 	//console.log('explode');
 
@@ -360,9 +360,9 @@ loadingState.preload = function(){
 	this.addImage('pauseImage', 'assets/pauseImage.png')
 	///////////////////////////////////
 	//SpriteSheet and Objects
-	this.addSpriteSheet('plane', 'assets/plane.png', 166, 83);
+	this.addSpriteSheet('plane', 'assets/rocket.png', 62, 26);
 	this.addSpriteSheet('explosion', 'assets/explosion.png', 129, 133);
-	this.addSpriteSheet('missile', 'assets/rocket.png', 62, 26);
+	this.addSpriteSheet('missile', 'assets/dage.png', 200, 200);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 }
