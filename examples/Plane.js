@@ -67,8 +67,8 @@ myState.create = function(){
     for(var i = 0; i < 3; i++){
     	this.bg3.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg3'], i*460, 305, true));//bg3
     	this.bg2.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg2'], i*460, 335, true));//bg2
-    	this.bg1.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg1'], i*460, 381, true));//bg1
-    } 
+   		this.bg1.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg1'], i*1143, 400, true));//bg1
+   	}
     //Background
     this.addChild(this.ground);
     this.addChild(this.bg7);
@@ -137,7 +137,8 @@ myState.checkMissiles = function(){
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
 				this.yell.play('default', true);
-				this.explodeGroup.addChild(new Explosion(this, missiles[j].x -30, missiles[j].y-70));
+
+				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70));
 				missiles[j].destroy();
 				break;
 			}
@@ -156,13 +157,6 @@ myState.spawnMissile = function(){
 
 }
 
-
-
-
-
-
-
-
 myState.updateParallax = function(){
 	//Ground
 	for(var i =0; i < this.grassGroup.members.length;i++){
@@ -173,9 +167,9 @@ myState.updateParallax = function(){
 	}
 	//bg1
 	for(var i =0; i < this.bg1.members.length;i++){
-		this.bg1.members[i].transform.x -= 10;		
-		if(this.bg1.members[i].transform.worldX <= -460){
-			this.bg1.members[i].transform.x = 460* (this.bg1.members.length - 1) ;
+		this.bg1.members[i].transform.x -= 0.5; //速度		
+		if(this.bg1.members[i].transform.worldX <= -1143){
+			this.bg1.members[i].transform.x = 1143* (this.bg1.members.length - 1) ;
 		}
 	}
 	//bg2
@@ -214,11 +208,6 @@ myState.updateParallax = function(){
 			this.bg7.members[i].transform.x = 434*(this.bg7.members.length - 1);
 		}
 	}
-
-
-
-
-
 }
 
 
@@ -264,8 +253,8 @@ Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 var EnemyMissile = function (state, x, y){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
 
-	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true);    
-	this.animation.play('walk');
+	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
+	// this.animation.play('walk');
 
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(50, 34, 50, 84);	
 	this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
@@ -350,7 +339,7 @@ loadingState.preload = function(){
 	this.addImage('ground', 'assets/ground.png');
 	this.addImage('grass', 'assets/ground-tiles/grass.png');
 	this.addImage('dirt', 'assets/ground-tiles/dirt.png');
-	this.addImage('bg1', 'assets/bg-layers/1.png');
+	this.addImage('bg1', 'assets/bg-layers/1.gif');
 	this.addImage('bg2', 'assets/bg-layers/2.png');
 	this.addImage('bg3', 'assets/bg-layers/3.png');
 	this.addImage('bg4', 'assets/bg-layers/4.png');
@@ -362,7 +351,8 @@ loadingState.preload = function(){
 	//SpriteSheet and Objects
 	this.addSpriteSheet('plane', 'assets/rocket.png', 62, 26);
 	this.addSpriteSheet('explosion', 'assets/explosion.png', 129, 133);
-	this.addSpriteSheet('missile', 'assets/dage.png', 200, 200);
+	this.addSpriteSheet('missile', 'assets/dage-1.png', 200, 225);
+	this.addSpriteSheet('cat', '/assets/catgirl.png', 148, 117);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 }
