@@ -138,6 +138,7 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
+				this.yell.play();
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x -30, missiles[j].y-70));
 				missiles[j].destroy();
 				break;
