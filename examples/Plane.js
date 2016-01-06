@@ -150,9 +150,22 @@ myState.checkMissiles = function(){
 
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
-		var enemyTexture;
-		if (Math.random() *2 >1) {enemyTexture = 'cat';} else {enemyTexture = 'missile';}
-		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture);
+		var enemyNum = Math.floor(Math.random()*10 + 1);
+		var enemyTexture, speed;
+		switch(enemyNum){
+			case 1: enemyTexture = '1'; speed = 4; break;
+			case 2: enemyTexture = '2'; speed = 4; break;
+			case 3: enemyTexture = '3'; speed = 4; break;
+			case 4: enemyTexture = '4'; speed = 4; break;
+			case 5: enemyTexture = '5'; speed = 4; break;
+			case 6: enemyTexture = '6'; speed = 4; break;
+			case 7: enemyTexture = '7'; speed = 4; break;
+			case 8: enemyTexture = '8'; speed = 4; break;
+			case 9: enemyTexture = '9'; speed = 4; break;
+			case 10: enemyTexture = 'cf'; speed = 10; break;
+			default: enemyTexture = '1'; speed = 4; break;
+		}
+		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
 		this.missileGroup.addChild(s);
 	}	
 
@@ -251,9 +264,10 @@ var Platform = function (state, x, y){
 }
 Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 
-var EnemyMissile = function (state, x, y, enemyTexture){
+var EnemyMissile = function (state, x, y, enemyTexture, speed){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures[enemyTexture], x, y);
 	this.enemyTexture = enemyTexture;
+	this.speed = speed;
 
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
 	// this.animation.play('walk');
@@ -269,7 +283,7 @@ var EnemyMissile = function (state, x, y, enemyTexture){
 		this.physics.update();
 
 		//速度
-		this.x -= 5;
+		this.x -= this.speed;
 		
 
 		if(this.health <= 0){
@@ -357,8 +371,16 @@ loadingState.preload = function(){
 	//SpriteSheet and Objects
 	this.addSpriteSheet('plane', 'assets/rocket.png', 62, 26);
 	this.addSpriteSheet('explosion', 'assets/explosion.png', 129, 133);
-	this.addSpriteSheet('missile', 'assets/dage-1.png', 200, 225);
-	this.addSpriteSheet('cat', 'assets/catgirl.png', 148, 117);
+	this.addSpriteSheet('1', 'assets/boy/1.png', 200, 225);
+	this.addSpriteSheet('2', 'assets/boy/2.png', 200, 225);
+	this.addSpriteSheet('3', 'assets/boy/3.png', 200, 225);
+	this.addSpriteSheet('4', 'assets/boy/4.png', 200, 225);
+	this.addSpriteSheet('5', 'assets/boy/5.png', 200, 225);
+	this.addSpriteSheet('6', 'assets/boy/6.png', 200, 225);
+	this.addSpriteSheet('7', 'assets/boy/7.png', 200, 225);
+	this.addSpriteSheet('8', 'assets/boy/8.png', 200, 225);
+	this.addSpriteSheet('9', 'assets/boy/9.png', 200, 225);
+	this.addSpriteSheet('cf', 'assets/boy/cf.png', 200, 225);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 }
