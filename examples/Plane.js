@@ -173,17 +173,17 @@ myState.update = function(){
 
 myState.checkScore = function(){
 	if(eatNum >= 100){
-		this.game.states.switchState('win');
 		this.healthBar.style.backgroundColor = '';
+		this.game.states.switchState('win');
 	}
 	if(this.score.counter.current <= 0){
-		this.game.states.switchState('lose');
     	this.healthBar.style.backgroundColor = '';
+		this.game.states.switchState('lose');
 	}
 }
 
 lose.preload = function(){
-    this.addImage('loseImage', 'assets/lose.gif')
+    this.addImage('loseImage', 'assets/lose.png');
 }
 
 lose.update = function(){
@@ -603,11 +603,20 @@ loadingState.switchToMain = function(){
     this.game.states.switchState('start');
 }
 
+start.preload = function(){
+	    this.addImage('startImage', 'assets/start.png');
+}
+
 start.create = function(){
-    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'START', 300, 430 );
+	this.startImage = new Kiwi.GameObjects.StaticImage(this, this.textures['startImage'], 0, 0);
+	this.addChild(this.startImage);
+	this.startImage.alpha = 1;
+
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'START', 300, 230 );
     this.game.huds.defaultHUD.addWidget( this.myButton );
 
     this.myButton.style.color = 'white';
+    this.myButton.style.opacity = '0.75';
     this.myButton.style.fontSize = '2em';
     this.myButton.style.fontWeight = 'bold';
     this.myButton.style.padding = '0.5em 1em';
@@ -623,7 +632,11 @@ start.create = function(){
 }
 
 start.buttonPressed = function() {
-    this.myButton.y = 435;
+    this.myButton.y = 235;
+    this.myButton.style.backgroundColor = '';
+    this.game.states.switchState('myState');
+    this.myButton.text = '';
+    this.myButton.style.padding = 0;
 }
 
 start.buttonReleased = function() {
