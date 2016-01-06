@@ -94,7 +94,13 @@ myState.create = function(){
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
+	this.yame = new Kiwi.Sound.Audio(this.game, 'yame', 1, false);
 	this.pin = new Kiwi.Sound.Audio(this.game, 'pin', 1, false);
+	this.speed1 = new Kiwi.Sound.Audio(this.game, 'speed1', 1, false);
+	this.speed2 = new Kiwi.Sound.Audio(this.game, 'speed2', 1, false);
+	this.speed3 = new Kiwi.Sound.Audio(this.game, 'speed3', 1, false);
+	this.speed4 = new Kiwi.Sound.Audio(this.game, 'speed4', 1, false);
+	this.speed5 = new Kiwi.Sound.Audio(this.game, 'speed5', 1, false);
 	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
 	this.music.play();
 
@@ -112,6 +118,15 @@ myState.onTimerCount = function () {
 	this.timerCount += 1;
 	if(!(this.timerCount%10)){
 		allSpeed*=1.2; //level up
+		var speedNum = Math.floor(Math.random()*5 + 1)
+			switch(speedNum){
+				case 1: this.speed1.play('default', true); break;
+				case 2: this.speed2.play('default', true); break;
+				case 3: this.speed3.play('default', true); break;
+				case 4: this.speed4.play('default', true); break;
+				case 5: this.speed5.play('default', true); break;
+				default: this.speed1.play('default', true); break;
+			}
 	}
 	if(this.plane.animation.currentAnimation.name == 'walk' && this.timerCount%3==0) {
 		this.plane.animation.play('happy');
@@ -215,10 +230,11 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
-				var yellNum = Math.floor(Math.random()*2 + 1)
+				var yellNum = Math.floor(Math.random()*3 + 1)
 				switch(yellNum){
 					case 1: this.pin.play('default', true); break;
 					case 2: this.yell.play('default', true); break;
+					case 3: this.yame.play('default', true); break;
 					default: this.yell.play('default', true); break;
 				}
 				
@@ -477,7 +493,13 @@ loadingState.preload = function(){
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 	this.addAudio('pin', 'assets/audio/pin.mp3');
+	this.addAudio('yame', 'assets/audio/yame.mp3');
 	this.addAudio('music', 'assets/audio/music.mp3');
+	this.addAudio('speed1', 'assets/audio/speedup/speedup1.mp3');
+	this.addAudio('speed2', 'assets/audio/speedup/speedup2.mp3');
+	this.addAudio('speed3', 'assets/audio/speedup/speedup3.mp3');
+	this.addAudio('speed4', 'assets/audio/speedup/speedup4.mp3');
+	this.addAudio('speed5', 'assets/audio/speedup/speedup5.mp3');
 }
 
 loadingState.update = function(){
