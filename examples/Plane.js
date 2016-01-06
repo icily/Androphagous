@@ -2,6 +2,7 @@ var myGame = new Kiwi.Game("testGameContainer","testGame",myState,{plugins:["LEA
 var myState = new Kiwi.State('myState');
 var loadingState = new Kiwi.State('loadingState');
 var preloader = new Kiwi.State('preloader');
+var lose = new Kiwi.State('lose');
 var s;
 var allSpeed = 4;
 
@@ -48,7 +49,7 @@ myState.create = function(){
 	/////////////////////////
 	//PauseImage
 	this.pauseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['pauseImage'], 0, 0);
-	this.loseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['loseImage'], 0, 0);
+
 
   	////////////////////////
   	//Creating parallax bacground assets  
@@ -89,7 +90,6 @@ myState.create = function(){
     //Foreground
     this.addChild(this.grassGroup);
     this.addChild(this.pauseImage);
-    this.addChild(this.loseImage);
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
@@ -98,19 +98,21 @@ myState.create = function(){
 
 	//scorebar
 	this.healthBar = new Kiwi.HUD.Widget.Bar ( this.game, 700, 1000, 10, 10, 780, 15);
-	this.healthBar.style.borderColor = '#FFF';
     this.healthBar.bar.style.backgroundColor = '#F00';
     this.healthBar.style.backgroundColor = '#000';
 	this.game.huds.defaultHUD.addWidget( this.healthBar );
 
 	this.score = new Kiwi.HUD.Widget.BasicScore( this.game, 50, 50, 0 );
-	this.score.counter.current = 1500;
+	this.score.counter.current = 50;
 }
 
 myState.onTimerCount = function () {
 	this.timerCount += 1;
 	if(!(this.timerCount%10)){
 		allSpeed*=1.2; //level up
+	}
+	if(this.plane.animation.currentAnimation.name == 'walk' && this.timerCount%3==0) {
+		this.plane.animation.play('happy');
 	}
 }
 
@@ -149,12 +151,60 @@ myState.update = function(){
 
 
 myState.checkScore = function(){
-	if(this.score.counter.current > 0){
-		this.loseImage.alpha = 0;
-	} else{
-		this.loseImage.alpha = 1;
+	if(this.score.counter.current <= 0){
+		this.game.states.switchState('lose');
+    	this.healthBar.style.backgroundColor = '';
 	}
 }
+
+lose.preload = function(){
+    this.addImage('loseImage', 'assets/lose.gif')
+}
+
+lose.update = function(){
+    Kiwi.State.prototype.update.call(this);
+}
+
+lose.create = function(){
+	this.loseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['loseImage'], 0, 0);
+	this.addChild(this.loseImage);
+	this.loseImage.alpha = 1;
+    
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 300, 430 );
+    this.game.huds.defaultHUD.addWidget( this.myButton );
+
+    this.myButton.style.color = 'white';
+    this.myButton.style.fontSize = '2em';
+    this.myButton.style.fontWeight = 'bold';
+    this.myButton.style.padding = '0.5em 1em';
+    this.myButton.style.backgroundColor = 'black';
+    this.myButton.style.cursor = 'pointer';
+
+    this.myButton.input.onDown.add( this.buttonPressed, this );
+    this.myButton.input.onUp.add( this.buttonReleased, this );
+
+    this.myButton.input.onOver.add( this.buttonOver, this );
+    this.myButton.input.onOut.add( this.buttonOut, this );
+}
+
+lose.buttonPressed = function() {
+    this.myButton.y = 435;
+	window.location.reload();
+}
+
+lose.buttonReleased = function() {
+    this.myButton.y = 430;
+	console.log('button pressed');
+}
+
+lose.buttonOver = function() {
+    this.myButton.style.backgroundColor = 'green';
+}
+
+lose.buttonOut = function() {
+    this.myButton.style.backgroundColor = 'black';
+}
+
 
 myState.checkMissiles = function(){
 	var bombs = this.bombGroup.members;
@@ -164,10 +214,12 @@ myState.checkMissiles = function(){
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
 				this.yell.play('default', true);
-
+				this.plane.animation.play('walk');
+				
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, missiles[j].enemyTexture));
 				missiles[j].destroy();
 				this.score.counter.current += 10;
+
 				break;
 			}
 			if(missiles[j].x < -200){
@@ -269,9 +321,9 @@ var Airplane = function(state, x, y){
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(30, 80, 130, 40);
 	this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
 
-	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true);    
+	this.animation.add('walk', [1,2,3,4,5,6], 0.1, true);    
 	this.animation.add('happy', [7,8,9,10,11], 0.1, true);
-	this.animation.play('walk');
+	this.animation.play('happy');
 
 	this.scaleX = 0.5;
 	this.scaleY = 0.5;
@@ -361,13 +413,11 @@ Kiwi.extend(Explosion,Kiwi.GameObjects.Sprite);
 preloader.preload = function(){
     Kiwi.State.prototype.preload.call(this);
     this.addImage('loadingImage', 'assets/loadingImage.png', true);
-
-
 }
+
 preloader.create = function(){
     Kiwi.State.prototype.create.call(this);
     this.game.states.switchState('loadingState');
-
 }
 
 loadingState.preload = function(){
@@ -400,7 +450,6 @@ loadingState.preload = function(){
 	this.addImage('bg6', 'assets/bg-layers/6.png');
 	this.addImage('bg7', 'assets/bg-layers/7.png');
 	this.addImage('pauseImage', 'assets/pauseImage.png')
-	this.addImage('loseImage', 'assets/pauseImage.png')
 	///////////////////////////////////
 	//SpriteSheet and Objects
 	this.addSpriteSheet('sw', 'assets/sw.png', 200, 225);
@@ -442,4 +491,5 @@ loadingState.switchToMain = function(){
 myGame.states.addState(loadingState);
 myGame.states.addState(preloader);
 myGame.states.addState(myState);
+myGame.states.addState(lose);
 myGame.states.switchState('preloader');
