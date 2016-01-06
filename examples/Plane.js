@@ -5,7 +5,6 @@ var preloader = new Kiwi.State('preloader');
 
 myState.preload = function(){
 	Kiwi.State.prototype.preload.call(this);
-	
 }
 
 myState.create = function(){
@@ -35,17 +34,14 @@ myState.create = function(){
 
 	///////////////////
 	//Plane and Bomb Door
-	this.plane = new Airplane(this,this.textures['plane'], 250, 20);
-	
-
+	this.plane = new Airplane(this,this.textures['sw'], 250, 20);
 	
 	/////////////////////////
 	//Timers for enemy spawns
-	this.timer = this.game.time.clock.createTimer('spawnTroop', .2, -1, true);
+	this.timer = this.game.time.clock.createTimer('spawnTroop', .5, -1, true);
 	this.timerEvent = this.timer.createTimerEvent(Kiwi.Time.TimerEvent.TIMER_COUNT, this.spawnMissile, this);
 
 	this.pauseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['pauseImage'], 0, 0);
-
 
   	////////////////////////
   	//Creating parallax bacground assets  
@@ -89,7 +85,18 @@ myState.create = function(){
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
+
+	//scorebar
+	this.healthBar = new Kiwi.HUD.Widget.Bar ( this.game, 700, 1000, 10, 10, 780, 15);
+	this.healthBar.style.borderColor = '#FFF';
+    this.healthBar.bar.style.backgroundColor = '#F00';
+    this.healthBar.style.backgroundColor = '#000';
+	this.game.huds.defaultHUD.addWidget( this.healthBar );
+
+	this.score = new Kiwi.HUD.Widget.BasicScore( this.game, 50, 50, 0 );
+	this.score.counter.current = 1500;
 }
+
 myState.update = function(){
 	Kiwi.State.prototype.update.call(this);
 	//console.log(this.control.hands[0].posY);
@@ -113,6 +120,8 @@ myState.update = function(){
 		//console.log(this.control.currentHand);
 		this.game.input.reset();
 	}
+
+	this.healthBar.counter.current = ( this.score.counter.current / 2000 ) * this.healthBar.counter.max;
 
 	this.updateParallax();
 	this.checkMissiles();
@@ -139,6 +148,7 @@ myState.checkMissiles = function(){
 
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, missiles[j].enemyTexture));
 				missiles[j].destroy();
+				this.score.counter.current += 10;
 				break;
 			}
 			if(missiles[j].x < -200){
@@ -167,6 +177,7 @@ myState.spawnMissile = function(){
 		}
 		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
 		this.missileGroup.addChild(s);
+		if(this.score.counter.current > 0) {this.score.counter.current -= 20;}
 	}	
 
 }
@@ -232,15 +243,17 @@ myState.updateParallax = function(){
 
 
 var Airplane = function(state, x, y){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures['plane'], x, y, true);
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['sw'], x, y, true);
 
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(30, 80, 130, 40);
 	this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
 
-	this.animation.add('walk', [0,1], 0.1, true);    
+	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true);    
+	this.animation.add('happy', [7,8,9,10,11], 0.1, true);
 	this.animation.play('walk');
 
-
+	this.scaleX = 0.5;
+	this.scaleY = 0.5;
 
 	Airplane.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
@@ -304,7 +317,7 @@ Kiwi.extend(EnemyMissile,Kiwi.GameObjects.Sprite);
 
 var Explosion = function (state, x, y, enemyTexture){
 	Kiwi.GameObjects.Sprite.call(this, state, state.textures[enemyTexture], x, y);
-	this.animation.add('explode', [7,8,9,10,11,12,13], 0.1, false);    
+	this.animation.add('explode', [7,8,9,10,11,12,13], 0.1, false);
 	this.animation.play('explode');
 	//console.log('explode');
 
@@ -369,7 +382,7 @@ loadingState.preload = function(){
 	this.addImage('pauseImage', 'assets/pauseImage.png')
 	///////////////////////////////////
 	//SpriteSheet and Objects
-	this.addSpriteSheet('plane', 'assets/rocket.png', 62, 26);
+	this.addSpriteSheet('sw', 'assets/sw.png', 200, 225);
 	this.addSpriteSheet('explosion', 'assets/explosion.png', 129, 133);
 	this.addSpriteSheet('1', 'assets/boy/1.png', 200, 225);
 	this.addSpriteSheet('2', 'assets/boy/2.png', 200, 225);
