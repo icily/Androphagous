@@ -261,7 +261,7 @@ win.create = function(){
     this.myButton.style.fontSize = '1.67em';
     this.myButton.style.fontWeight = 'bold';
     this.myButton.style.padding = '0.5em 1em';
-    this.myButton.style.backgroundColor = 'black';
+    this.myButton.style.backgroundColor = '';
     this.myButton.style.cursor = 'pointer';
     this.myButton.style.fontFamily = 'Courier';
 
@@ -283,11 +283,11 @@ win.buttonReleased = function() {
 }
 
 win.buttonOver = function() {
-    this.myButton.style.backgroundColor = 'green';
+    this.myButton.color = 'green';
 }
 
 win.buttonOut = function() {
-    this.myButton.style.backgroundColor = 'black';
+    this.myButton.style.backgroundColor = '';
 }
 
 
@@ -604,7 +604,7 @@ loadingState.switchToMain = function(){
 }
 
 start.preload = function(){
-	    this.addImage('startImage', 'assets/start.png');
+	    this.addImage('startImage', 'assets/lose.gif');
 }
 
 start.create = function(){
