@@ -198,13 +198,13 @@ lose.create = function(){
 	this.text = new Kiwi.GameObjects.Textfield( this, "You ate " + eatNum + " Person.", 90, 340, "#FFF", 32, 'normal', 'Courier' );
 	this.addChild( this.text );
     
-    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 290, 420 );
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 280, 420 );
     this.game.huds.defaultHUD.addWidget( this.myButton );
 
     this.myButton.style.color = 'white';
     this.myButton.style.fontSize = '2em';
     this.myButton.style.fontWeight = 'bold';
-    this.myButton.style.padding = '0.5em 1em';
+    this.myButton.style.padding = '0.2em 2em';
     this.myButton.style.backgroundColor = 'black';
     this.myButton.style.cursor = 'pointer';
     this.myButton.style.fontFamily = 'Courier';
