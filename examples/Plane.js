@@ -604,7 +604,7 @@ loadingState.switchToMain = function(){
 }
 
 start.preload = function(){
-	    this.addImage('startImage', 'assets/lose.gif');
+    this.addImage('startImage', 'assets/start.png');
 }
 
 start.create = function(){
