@@ -52,7 +52,6 @@ myState.create = function(){
     for(var i = 0; i < 20; i++){//grass
     	this.grassGroup.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['grass'], i * 48, 504, true));
     	this.grassGroup.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['dirt'], i * 48, 552, true));
-
     }
     for(var i = 0; i < 4; i++){
     	this.bg7.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg7'], i*434, 0, true));//bg7
@@ -251,7 +250,8 @@ var Platform = function (state, x, y){
 Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 
 var EnemyMissile = function (state, x, y){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
+	var missile = 'cat';
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures[missile], x, y);
 	
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
 	// this.animation.play('walk');
@@ -286,7 +286,7 @@ Kiwi.extend(EnemyMissile,Kiwi.GameObjects.Sprite);
 
 
 var Explosion = function (state, x, y){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures[this.missile], x, y);
 	this.animation.add('explode', [7,8,9,10,11,12,13], 0.1, false);    
 	this.animation.play('explode');
 	//console.log('explode');
