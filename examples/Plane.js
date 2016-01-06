@@ -294,6 +294,9 @@ var Explosion = function (state, x, y, enemyTexture){
 	this.animation.play('explode');
 	//console.log('explode');
 
+	this.scaleX = 0.5;
+	this.scaleY = 0.5;
+
 	Explosion.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
 		this.x -= 2;
