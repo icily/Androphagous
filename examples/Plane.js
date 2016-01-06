@@ -86,7 +86,6 @@ myState.create = function(){
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
 	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
-	this.music.play();
 
 	//scorebar
 	this.healthBar = new Kiwi.HUD.Widget.Bar ( this.game, 700, 1000, 10, 10, 780, 15);
@@ -395,11 +394,12 @@ loadingState.preload = function(){
 	this.addSpriteSheet('8', 'assets/boy/8.png', 200, 225);
 	this.addSpriteSheet('9', 'assets/boy/9.png', 200, 225);
 	this.addSpriteSheet('cf', 'assets/boy/cf.png', 200, 225);
-	this.addSpriteSheet('10', 'assets/girl/1.png', 200, 225);
-	this.addSpriteSheet('11', 'assets/girl/2.png', 200, 225);
+	this.addSpriteSheet('11', 'assets/girl/1.png', 200, 225);
+	this.addSpriteSheet('12', 'assets/girl/2.png', 200, 225);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 	this.addAudio('music', 'assets/audio/music.mp3');
+	this.music.play();
 }
 
 loadingState.update = function(){
