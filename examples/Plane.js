@@ -100,6 +100,7 @@ myState.create = function(){
 	this.speed2 = new Kiwi.Sound.Audio(this.game, 'speed2', 1, false);
 	this.speed3 = new Kiwi.Sound.Audio(this.game, 'speed3', 1, false);
 	this.speed4 = new Kiwi.Sound.Audio(this.game, 'speed4', 1, false);
+	this.speed4.volume +=0.5;
 	this.speed5 = new Kiwi.Sound.Audio(this.game, 'speed5', 1, false);
 	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
 	this.music.play();
