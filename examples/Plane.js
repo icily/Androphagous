@@ -217,12 +217,12 @@ lose.create = function(){
 }
 
 lose.buttonPressed = function() {
-    this.myButton.y = 435;
+    this.myButton.y = 425;
 	window.location.reload();
 }
 
 lose.buttonReleased = function() {
-    this.myButton.y = 430;
+    this.myButton.y = 420;
 	console.log('button pressed');
 }
 
@@ -273,12 +273,12 @@ win.create = function(){
 }
 
 win.buttonPressed = function() {
-    this.myButton.y = 435;
+    this.myButton.y = 385;
 	window.location.reload();
 }
 
 win.buttonReleased = function() {
-    this.myButton.y = 430;
+    this.myButton.y = 380;
 	console.log('button pressed');
 }
 
