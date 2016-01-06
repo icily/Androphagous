@@ -198,7 +198,7 @@ lose.create = function(){
 	this.text = new Kiwi.GameObjects.Textfield( this, "You ate " + eatNum + " Person.", 90, 340, "#FFF", 32, 'normal', 'Courier' );
 	this.addChild( this.text );
     
-    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 300, 430 );
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 290, 420 );
     this.game.huds.defaultHUD.addWidget( this.myButton );
 
     this.myButton.style.color = 'white';
