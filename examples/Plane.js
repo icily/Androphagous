@@ -93,6 +93,7 @@ myState.create = function(){
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
+	this.yell = new Kiwi.Sound.Audio(this.game, 'pin', 1, false);
 	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
 	this.music.play();
 
@@ -213,7 +214,12 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
-				this.yell.play('default', true);
+				if(missiles[j].enemyTexture<'A'){
+					this.yell.play('default', true);	
+				} else {
+					this.pin.play('default', true);	
+				}
+				
 				this.plane.animation.play('walk');
 				
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, missiles[j].enemyTexture));
@@ -243,7 +249,7 @@ myState.spawnMissile = function(){
 			case 7: enemyTexture = '7'; speed = allSpeed; break;
 			case 8: enemyTexture = '8'; speed = allSpeed; break;
 			case 9: enemyTexture = '9'; speed = allSpeed; break;
-			case 10: enemyTexture = 'cf'; speed = 2.5 * allSpeed; break;
+			case 10: enemyTexture = '10'; speed = 2.5 * allSpeed; break;
 			case 11: enemyTexture = '11'; speed = allSpeed; break;
 			case 12: enemyTexture = '12'; speed = allSpeed; break;
 			default: enemyTexture = '1'; speed = allSpeed; break;
@@ -463,11 +469,12 @@ loadingState.preload = function(){
 	this.addSpriteSheet('7', 'assets/boy/7.png', 200, 225);
 	this.addSpriteSheet('8', 'assets/boy/8.png', 200, 225);
 	this.addSpriteSheet('9', 'assets/boy/9.png', 200, 225);
-	this.addSpriteSheet('cf', 'assets/boy/cf.png', 200, 225);
+	this.addSpriteSheet('10', 'assets/boy/cf.png', 200, 225);
 	this.addSpriteSheet('11', 'assets/girl/1.png', 200, 225);
 	this.addSpriteSheet('12', 'assets/girl/2.png', 200, 225);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
+	this.addAudio('pin', 'assets/audio/pin.mp3');
 	this.addAudio('music', 'assets/audio/music.mp3');
 }
 
