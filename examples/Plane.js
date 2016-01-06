@@ -137,7 +137,7 @@ myState.checkMissiles = function(){
 				missiles[j].health --;
 				this.yell.play('default', true);
 
-				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, this.texture));
+				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70));
 				missiles[j].destroy();
 				break;
 			}
@@ -150,9 +150,7 @@ myState.checkMissiles = function(){
 
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
-		var texture;
-		if(Math.random()*2>1) {texture = 'cat';}else{texture = 'missile';}
-		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, texture);
+		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450);
 		this.missileGroup.addChild(s);
 	}	
 
@@ -251,8 +249,8 @@ var Platform = function (state, x, y){
 }
 Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 
-var EnemyMissile = function (state, x, y, texture){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures[texture], x, y);
+var EnemyMissile = function (state, x, y){
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
 	
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
 	// this.animation.play('walk');
@@ -286,8 +284,8 @@ Kiwi.extend(EnemyMissile,Kiwi.GameObjects.Sprite);
 
 
 
-var Explosion = function (state, x, y, texture){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures[texture], x, y);
+var Explosion = function (state, x, y){
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['missile'], x, y);
 	this.animation.add('explode', [7,8,9,10,11,12,13], 0.1, false);    
 	this.animation.play('explode');
 	//console.log('explode');
