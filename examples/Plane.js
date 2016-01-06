@@ -151,7 +151,7 @@ myState.checkMissiles = function(){
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
 		var texture = '';
-		if(Math.random()*2) {texture = 'cat';}else{texture = 'missile';}
+		if(Math.random()) {texture = 'cat';}else{texture = 'missile';}
 		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, texture);
 		this.missileGroup.addChild(s);
 	}	
