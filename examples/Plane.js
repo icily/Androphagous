@@ -284,7 +284,7 @@ var EnemyMissile = function (state, x, y, enemyTexture, speed){
 	this.speed = speed;
 
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
-	// this.animation.play('walk');
+	this.animation.play('walk');
 
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(50, 34, 50, 84);	
 	this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
@@ -395,8 +395,8 @@ loadingState.preload = function(){
 	this.addSpriteSheet('8', 'assets/boy/8.png', 200, 225);
 	this.addSpriteSheet('9', 'assets/boy/9.png', 200, 225);
 	this.addSpriteSheet('cf', 'assets/boy/cf.png', 200, 225);
-	this.addSpriteSheet('10', 'assets/girl/1.png', 200, 225);
-	this.addSpriteSheet('11', 'assets/girl/2.png', 200, 225);
+	this.addSpriteSheet('11', 'assets/girl/1.png', 200, 225);
+	this.addSpriteSheet('12', 'assets/girl/2.png', 200, 225);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 	this.addAudio('music', 'assets/audio/music.mp3');
