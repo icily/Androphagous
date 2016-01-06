@@ -136,7 +136,6 @@ myState.checkMissiles = function(){
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
 				this.yell.play('default', true);
-				console.log(missileGroup);
 
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, this.texture));
 				missiles[j].destroy();
@@ -152,13 +151,7 @@ myState.checkMissiles = function(){
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
 		var texture;
-		if (Math.random()*2>1) {
-			texture = 'cat';
-		}
-		else{
-			texture = 'missile';
-		}
-		
+		if(Math.random()*2>1) {texture = 'cat';}else{texture = 'missile';}
 		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, texture);
 		this.missileGroup.addChild(s);
 	}	
