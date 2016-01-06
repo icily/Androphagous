@@ -254,7 +254,7 @@ win.create = function(){
 	this.addChild( this.text1 );
 	this.addChild( this.text2 );
     
-    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 330, 390 );
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 320, 380 );
     this.game.huds.defaultHUD.addWidget( this.myButton );
 
     this.myButton.style.color = 'white';
