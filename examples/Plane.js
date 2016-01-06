@@ -195,7 +195,7 @@ lose.create = function(){
 	this.addChild(this.loseImage);
 	this.loseImage.alpha = 1;
 
-	this.text = new Kiwi.GameObjects.Textfield( this, "You ate " + eatNum + " Person.", 90, 340, "#FFF", 32, 'normal', 'Courier' );
+	this.text = new Kiwi.GameObjects.Textfield( this, "You ate " + eatNum + " People.", 90, 340, "#FFF", 32, 'normal', 'Courier' );
 	this.addChild( this.text );
     
     this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 280, 420 );
@@ -249,7 +249,7 @@ win.create = function(){
 
 	this.text = new Kiwi.GameObjects.Textfield( this, "ATE", 360, 65, "#FFF", 38, 'normal', 'Courier' );
 	this.text1 = new Kiwi.GameObjects.Textfield( this, eatNum, 358, 103, "#FF0", 38, 'bold', 'Courier' );
-	this.text2 = new Kiwi.GameObjects.Textfield( this, " Person", 305, 141, "#FF0", 38, 'normal', 'Courier' );
+	this.text2 = new Kiwi.GameObjects.Textfield( this, " People", 305, 141, "#FF0", 38, 'normal', 'Courier' );
 	this.addChild( this.text );
 	this.addChild( this.text1 );
 	this.addChild( this.text2 );
