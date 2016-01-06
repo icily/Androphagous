@@ -182,9 +182,9 @@ myState.checkScore = function(){
 	}
 }
 
-lose.preload = function(){
-    this.addImage('loseImage', 'assets/lose.png');
-}
+// lose.preload = function(){
+//     this.addImage('loseImage', 'assets/lose.png');
+// }
 
 lose.update = function(){
     Kiwi.State.prototype.update.call(this);
@@ -513,6 +513,7 @@ Kiwi.extend(Explosion,Kiwi.GameObjects.Sprite);
 preloader.preload = function(){
     Kiwi.State.prototype.preload.call(this);
     this.addImage('loadingImage', 'assets/loadingImage.png', true);
+    this.addImage('loseImage', 'assets/lose.png');
 }
 
 preloader.create = function(){
