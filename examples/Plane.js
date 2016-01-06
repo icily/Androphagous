@@ -121,7 +121,7 @@ myState.create = function(){
 myState.onTimerCount = function () {
 	this.timerCount += 1;
 	if(!(this.timerCount%10)){
-		allSpeed+= 1.2; //level up
+		allSpeed+= 4; //level up
 		var speedNum = Math.floor(Math.random()*5 + 1)
 			switch(speedNum){
 				case 1: this.speed1.play('default', true); break;
@@ -151,10 +151,10 @@ myState.update = function(){
 		this.plane.y =((-1 * this.control.hands[0].posY)*1.7) + 600;
 
 	//手細節effect
-	// this.plane.scaleX = this.control.hands[0].posZ /250;
-	// this.plane.scaleY = this.control.hands[0].posZ / 250;
+	// this.plane.scaleX = this.control.hands[0].posZ / 300;
+	// this.plane.scaleY = this.control.hands[0].posZ / 300;
 	// this.plane.rotation = -1 * (this.control.hands[0].palmNormalX);
-	///
+	// /
 
 	if(this.game.input.isDown){
 		//console.log(this.control.currentHand);
@@ -425,8 +425,8 @@ var Airplane = function(state, x, y){
 	this.animation.add('happy', [7,8,9,10,11], 0.1, true);
 	this.animation.play('happy');
 
-	this.scaleX = 0.5;
-	this.scaleY = 0.5;
+	this.scaleX = 0.4;
+	this.scaleY = 0.4;
 
 	Airplane.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
@@ -461,8 +461,8 @@ var EnemyMissile = function (state, x, y, enemyTexture, speed){
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(50, 34, 50, 84);	
 	this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
 	this.health = 1;
-	this.scaleX = 0.5;
-	this.scaleY = 0.5;
+	this.scaleX = 0.6;
+	this.scaleY = 0.6;
 
 	EnemyMissile.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
@@ -493,8 +493,8 @@ var Explosion = function (state, x, y, enemyTexture){
 	this.animation.play('explode');
 	//console.log('explode');
 
-	this.scaleX = 0.5;
-	this.scaleY = 0.5;
+	this.scaleX = 0.7;
+	this.scaleY = 0.7;
 
 	Explosion.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
