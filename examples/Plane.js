@@ -3,8 +3,9 @@ var myState = new Kiwi.State('myState');
 var loadingState = new Kiwi.State('loadingState');
 var preloader = new Kiwi.State('preloader');
 var lose = new Kiwi.State('lose');
+var start = new Kiwi.State('start');
 var s;
-var allSpeed = 4;
+var allSpeed = 2;
 
 myState.preload = function(){
 	Kiwi.State.prototype.preload.call(this);
@@ -272,35 +273,35 @@ myState.updateParallax = function(){
 	}
 	//bg1
 	for(var i =0; i < this.bg1.members.length;i++){
-		this.bg1.members[i].transform.x -= 0.5; //速度		
+		this.bg1.members[i].transform.x -= 0.5*allSpeed; //速度		
 		if(this.bg1.members[i].transform.worldX <= -1143){
 			this.bg1.members[i].transform.x = 1143* (this.bg1.members.length - 1) ;
 		}
 	}
 	//bg2
 	for(var i =0; i < this.bg2.members.length;i++){
-		this.bg2.members[i].transform.x -= 8;		
+		this.bg2.members[i].transform.x -= 4*allSpeed;		
 		if(this.bg2.members[i].transform.worldX <= -460){
 			this.bg2.members[i].transform.x = 460*(this.bg2.members.length - 1);
 		}
 	}
 	//bg3
 	for(var i =0; i < this.bg3.members.length;i++){
-		this.bg3.members[i].transform.x -= 6;		
+		this.bg3.members[i].transform.x -= 3*allSpeed;		
 		if(this.bg3.members[i].transform.worldX <= -460){
 			this.bg3.members[i].transform.x = 460*(this.bg3.members.length - 1);
 		}
 	}
 	//bg4
 	for(var i =0; i < this.bg4.members.length;i++){
-		this.bg4.members[i].transform.x -= 4;
+		this.bg4.members[i].transform.x -= 2*allSpeed;
 		if(this.bg4.members[i].transform.worldX <= -96){
 			this.bg4.members[i].transform.x = 96*(this.bg4.members.length - 1);
 		}
 	}
 	//bg5
 	for(var i =0; i < this.bg4.members.length;i++){
-		this.bg5.members[i].transform.x -= 3;		
+		this.bg5.members[i].transform.x -= 1.5*allSpeed;		
 		if(this.bg5.members[i].transform.worldX <= -96){
 			this.bg5.members[i].transform.x = 96*(this.bg5.members.length - 1);
 		}
@@ -493,9 +494,47 @@ loadingState.create = function(){
     this.tweenOut.start();
 }
 loadingState.switchToMain = function(){
-    this.game.states.switchState('myState');
+    this.game.states.switchState('start');
 }
 
+start.create = function(){
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'START', 300, 430 );
+    this.game.huds.defaultHUD.addWidget( this.myButton );
+
+    this.myButton.style.color = 'white';
+    this.myButton.style.fontSize = '2em';
+    this.myButton.style.fontWeight = 'bold';
+    this.myButton.style.padding = '0.5em 1em';
+    this.myButton.style.backgroundColor = 'black';
+    this.myButton.style.cursor = 'pointer';
+
+    this.myButton.input.onDown.add( this.buttonPressed, this );
+    this.myButton.input.onUp.add( this.buttonReleased, this );
+
+    this.myButton.input.onOver.add( this.buttonOver, this );
+    this.myButton.input.onOut.add( this.buttonOut, this );
+}
+
+start.buttonPressed = function() {
+    this.myButton.y = 435;
+}
+
+start.buttonReleased = function() {
+    this.myButton.style.backgroundColor = '';
+    this.game.states.switchState('myState');
+    this.myButton.text = '';
+}
+
+start.buttonOver = function() {
+    this.myButton.style.backgroundColor = 'green';
+}
+
+start.buttonOut = function() {
+    this.myButton.style.backgroundColor = '';
+}
+
+
+myGame.states.addState(start);
 myGame.states.addState(loadingState);
 myGame.states.addState(preloader);
 myGame.states.addState(myState);
