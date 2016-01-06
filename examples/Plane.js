@@ -151,7 +151,7 @@ myState.checkMissiles = function(){
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
 		var texture;
-		if(Math.random()*2>1) {texture = 'missile';} else{texture = 'cat';}
+		if(Math.random()*2>1) {texture = 'cat';}else{texture = 'missile';}
 		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, texture);
 		this.missileGroup.addChild(s);
 	}	
@@ -252,7 +252,7 @@ var Platform = function (state, x, y){
 Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 
 var EnemyMissile = function (state, x, y, texture){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures.texture, x, y);
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures[texture], x, y);
 	
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
 	// this.animation.play('walk');
