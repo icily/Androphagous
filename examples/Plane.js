@@ -137,7 +137,7 @@ myState.checkMissiles = function(){
 				missiles[j].health --;
 				this.yell.play('default', true);
 
-				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, missiles[j].texture));
+				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, this.texture));
 				missiles[j].destroy();
 				break;
 			}
