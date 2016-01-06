@@ -85,6 +85,8 @@ myState.create = function(){
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
+	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
+
 
 	//scorebar
 	this.healthBar = new Kiwi.HUD.Widget.Bar ( this.game, 700, 1000, 10, 10, 780, 15);
@@ -141,8 +143,7 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
-				myState.yell.play('default', true);
-
+				this.yell.play();
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, missiles[j].enemyTexture));
 				missiles[j].destroy();
 				this.score.counter.current += 10;
@@ -249,7 +250,7 @@ var Airplane = function(state, x, y){
 
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true);    
 	this.animation.add('happy', [7,8,9,10,11], 0.1, true);
-	this.animation.play('walk');
+	myState.plane.animation.play('walk');
 
 	this.scaleX = 0.5;
 	this.scaleY = 0.5;
@@ -397,6 +398,8 @@ loadingState.preload = function(){
 	this.addSpriteSheet('12', 'assets/girl/2.png', 200, 225);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
+	this.addAudio('music', 'assets/audio/music.mp3');
+	this.music.play();
 }
 
 loadingState.update = function(){
