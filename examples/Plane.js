@@ -214,7 +214,7 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
-				if(missiles[j].enemyTexture<10){
+				if(missiles[j].enemyTexture==='1'||'2'||'3'||'4'||'5'||'6'||'7'||'8'||'9'||'10'){
 					this.yell.play('default', true);	
 				} else {
 					this.pin.play('default', true);	
