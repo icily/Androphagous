@@ -100,7 +100,6 @@ myState.create = function(){
 	this.speed2 = new Kiwi.Sound.Audio(this.game, 'speed2', 1, false);
 	this.speed3 = new Kiwi.Sound.Audio(this.game, 'speed3', 1, false);
 	this.speed4 = new Kiwi.Sound.Audio(this.game, 'speed4', 1, false);
-	this.speed4.volume +=0.5;
 	this.speed5 = new Kiwi.Sound.Audio(this.game, 'speed5', 1, false);
 	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
 	this.music.play();
@@ -144,7 +143,7 @@ myState.update = function(){
 
 
 		this.control.update();
-		this.plane.x = (this.control.hands[0].posX* 1.7) + 400;
+		this.plane.x = (this.control.hands[0].posX* 1.7) + 200;
 		this.plane.y =((-1 * this.control.hands[0].posY)*1.7) + 600;
 
 	//手細節effect
@@ -256,7 +255,7 @@ myState.checkMissiles = function(){
 
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
-		var enemyNum = Math.floor(Math.random()*12 + 1);
+		var enemyNum = Math.floor(Math.random()*18 + 1);
 		var enemyTexture, speed;
 		switch(enemyNum){
 			case 1: enemyTexture = '1'; speed = allSpeed; break;
@@ -271,6 +270,12 @@ myState.spawnMissile = function(){
 			case 10: enemyTexture = '10'; speed = 2.5 * allSpeed; break;
 			case 11: enemyTexture = '11'; speed = allSpeed; break;
 			case 12: enemyTexture = '12'; speed = allSpeed; break;
+			case 13: enemyTexture = '13'; speed = allSpeed; break;
+			case 14: enemyTexture = '14'; speed = allSpeed; break;
+			case 15: enemyTexture = '15'; speed = allSpeed; break;
+			case 16: enemyTexture = '16'; speed = allSpeed; break;
+			case 17: enemyTexture = '17'; speed = allSpeed; break;
+			case 18: enemyTexture = '18'; speed = 1.5 * allSpeed; break;
 			default: enemyTexture = '1'; speed = allSpeed; break;
 		}
 		s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
@@ -491,6 +496,13 @@ loadingState.preload = function(){
 	this.addSpriteSheet('10', 'assets/boy/cf.png', 200, 225);
 	this.addSpriteSheet('11', 'assets/girl/1.png', 200, 225);
 	this.addSpriteSheet('12', 'assets/girl/2.png', 200, 225);
+	this.addSpriteSheet('13', 'assets/girl/3.png', 200, 225);
+	this.addSpriteSheet('14', 'assets/girl/4.png', 200, 225);
+	this.addSpriteSheet('15', 'assets/girl/5.png', 200, 225);
+	this.addSpriteSheet('16', 'assets/girl/6.png', 200, 225);
+	this.addSpriteSheet('17', 'assets/girl/7.png', 200, 225);
+	this.addSpriteSheet('18', 'assets/boy/rs.png', 200, 225);
+	
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 	this.addAudio('pin', 'assets/audio/pin.mp3');
