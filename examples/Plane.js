@@ -258,7 +258,7 @@ win.create = function(){
     this.game.huds.defaultHUD.addWidget( this.myButton );
 
     this.myButton.style.color = 'white';
-    this.myButton.style.fontSize = '2em';
+    this.myButton.style.fontSize = '1.67em';
     this.myButton.style.fontWeight = 'bold';
     this.myButton.style.padding = '0.5em 1em';
     this.myButton.style.backgroundColor = 'black';
