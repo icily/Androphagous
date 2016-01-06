@@ -93,7 +93,7 @@ myState.create = function(){
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
-	this.yell = new Kiwi.Sound.Audio(this.game, 'pin', 1, false);
+	this.pin = new Kiwi.Sound.Audio(this.game, 'pin', 1, false);
 	this.music = new Kiwi.Sound.Audio(this.game, 'music', 1, true);
 	this.music.play();
 
