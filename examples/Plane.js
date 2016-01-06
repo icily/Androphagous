@@ -252,7 +252,7 @@ var Platform = function (state, x, y){
 Kiwi.extend(Platform,Kiwi.GameObjects.Sprite);
 
 var EnemyMissile = function (state, x, y, texture){
-	Kiwi.GameObjects.Sprite.call(this, state, state.textures[texture], x, y);
+	Kiwi.GameObjects.Sprite.call(this, state, state.textures['explosion'], x, y);
 	
 	this.animation.add('walk', [0,1,2,3,4,5,6], 0.1, true, true);
 	// this.animation.play('walk');
