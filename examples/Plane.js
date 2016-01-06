@@ -125,12 +125,9 @@ myState.update = function(){
 
 	this.updateParallax();
 	this.checkMissiles();
-} else {
-	this.pauseImage.alpha = 1;
-}
-
-
-
+	} else {
+		this.pauseImage.alpha = 1;
+	}
 }
 
 
@@ -144,7 +141,7 @@ myState.checkMissiles = function(){
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
 				missiles[j].health --;
-				this.yell.play('default', true);
+				myState.yell.play('default', true);
 
 				this.explodeGroup.addChild(new Explosion(this, missiles[j].x-30, missiles[j].y-70, missiles[j].enemyTexture));
 				missiles[j].destroy();
@@ -160,7 +157,7 @@ myState.checkMissiles = function(){
 
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
-		var enemyNum = Math.floor(Math.random()*10 + 1);
+		var enemyNum = Math.floor(Math.random()*12 + 1);
 		var enemyTexture, speed;
 		switch(enemyNum){
 			case 1: enemyTexture = '1'; speed = 4; break;
@@ -173,11 +170,13 @@ myState.spawnMissile = function(){
 			case 8: enemyTexture = '8'; speed = 4; break;
 			case 9: enemyTexture = '9'; speed = 4; break;
 			case 10: enemyTexture = 'cf'; speed = 10; break;
+			case 11: enemyTexture = '11'; speed = 4; break;
+			case 12: enemyTexture = '12'; speed = 4; break;
 			default: enemyTexture = '1'; speed = 4; break;
 		}
 		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
 		this.missileGroup.addChild(s);
-		if(this.score.counter.current > 0) {this.score.counter.current -= 20;}
+		if(this.score.counter.current > 0) {this.score.counter.current -= 15;}
 	}	
 
 }
@@ -372,7 +371,7 @@ loadingState.preload = function(){
 	this.addImage('ground', 'assets/ground.png');
 	// this.addImage('grass', 'assets/ground-tiles/grass.png');
 	// this.addImage('dirt', 'assets/ground-tiles/dirt.png');
-	this.addImage('bg1', 'assets/bg-layers/1.gif');
+	this.addImage('bg1', 'assets/bg-layers/giant4.gif');
 	this.addImage('bg2', 'assets/bg-layers/2.png');
 	this.addImage('bg3', 'assets/bg-layers/3.png');
 	this.addImage('bg4', 'assets/bg-layers/4.png');
@@ -394,6 +393,8 @@ loadingState.preload = function(){
 	this.addSpriteSheet('8', 'assets/boy/8.png', 200, 225);
 	this.addSpriteSheet('9', 'assets/boy/9.png', 200, 225);
 	this.addSpriteSheet('cf', 'assets/boy/cf.png', 200, 225);
+	this.addSpriteSheet('11', 'assets/girl/1.png', 200, 225);
+	this.addSpriteSheet('12', 'assets/girl/2.png', 200, 225);
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 }
