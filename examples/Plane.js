@@ -525,7 +525,7 @@ loadingState.preload = function(){
     this.game.states.rebuildLibraries();
     this.game.stage.color = '#E0EDF1';
     
-    this.logo = new Kiwi.GameObjects.StaticImage(this, this.textures['loadingImage'], 150, 50);
+    this.logo = new Kiwi.GameObjects.StaticImage(this, this.textures['loadingImage'], 800, 600);
     
     this.addChild(this.logo);
 
