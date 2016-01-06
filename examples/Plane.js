@@ -2,6 +2,8 @@ var myGame = new Kiwi.Game("testGameContainer","testGame",myState,{plugins:["LEA
 var myState = new Kiwi.State('myState');
 var loadingState = new Kiwi.State('loadingState');
 var preloader = new Kiwi.State('preloader');
+var s;
+var allSpeed = 4;
 
 myState.preload = function(){
 	Kiwi.State.prototype.preload.call(this);
@@ -40,8 +42,13 @@ myState.create = function(){
 	//Timers for enemy spawns
 	this.timer = this.game.time.clock.createTimer('spawnTroop', .5, -1, true);
 	this.timerEvent = this.timer.createTimerEvent(Kiwi.Time.TimerEvent.TIMER_COUNT, this.spawnMissile, this);
+	this.timerEvent = this.timer.createTimerEvent(Kiwi.Time.TimerEvent.TIMER_COUNT, this.onTimerCount, this);
+	this.timerCount = 0;
 
+	/////////////////////////
+	//PauseImage
 	this.pauseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['pauseImage'], 0, 0);
+	this.loseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['loseImage'], 0, 0);
 
   	////////////////////////
   	//Creating parallax bacground assets  
@@ -82,6 +89,7 @@ myState.create = function(){
     //Foreground
     this.addChild(this.grassGroup);
     this.addChild(this.pauseImage);
+    this.addChild(this.loseImage);
 
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
@@ -97,6 +105,13 @@ myState.create = function(){
 
 	this.score = new Kiwi.HUD.Widget.BasicScore( this.game, 50, 50, 0 );
 	this.score.counter.current = 1500;
+}
+
+myState.onTimerCount = function () {
+	this.timerCount += 1;
+	if(!(this.timerCount%10)){
+		allSpeed*=1.2; //level up
+	}
 }
 
 myState.update = function(){
@@ -124,7 +139,7 @@ myState.update = function(){
 	}
 
 	this.healthBar.counter.current = ( this.score.counter.current / 2000 ) * this.healthBar.counter.max;
-
+	this.checkScore();
 	this.updateParallax();
 	this.checkMissiles();
 	} else {
@@ -133,8 +148,13 @@ myState.update = function(){
 }
 
 
-
-
+myState.checkScore = function(){
+	if(this.score.counter.current > 0){
+		this.loseImage.alpha = 0;
+	} else{
+		this.loseImage.alpha = 1;
+	}
+}
 
 myState.checkMissiles = function(){
 	var bombs = this.bombGroup.members;
@@ -162,23 +182,23 @@ myState.spawnMissile = function(){
 		var enemyNum = Math.floor(Math.random()*12 + 1);
 		var enemyTexture, speed;
 		switch(enemyNum){
-			case 1: enemyTexture = '1'; speed = 4; break;
-			case 2: enemyTexture = '2'; speed = 4; break;
-			case 3: enemyTexture = '3'; speed = 4; break;
-			case 4: enemyTexture = '4'; speed = 4; break;
-			case 5: enemyTexture = '5'; speed = 4; break;
-			case 6: enemyTexture = '6'; speed = 4; break;
-			case 7: enemyTexture = '7'; speed = 4; break;
-			case 8: enemyTexture = '8'; speed = 4; break;
-			case 9: enemyTexture = '9'; speed = 4; break;
-			case 10: enemyTexture = 'cf'; speed = 10; break;
-			case 11: enemyTexture = '11'; speed = 4; break;
-			case 12: enemyTexture = '12'; speed = 4; break;
-			default: enemyTexture = '1'; speed = 4; break;
+			case 1: enemyTexture = '1'; speed = allSpeed; break;
+			case 2: enemyTexture = '2'; speed = allSpeed; break;
+			case 3: enemyTexture = '3'; speed = allSpeed; break;
+			case 4: enemyTexture = '4'; speed = allSpeed; break;
+			case 5: enemyTexture = '5'; speed = allSpeed; break;
+			case 6: enemyTexture = '6'; speed = allSpeed; break;
+			case 7: enemyTexture = '7'; speed = allSpeed; break;
+			case 8: enemyTexture = '8'; speed = allSpeed; break;
+			case 9: enemyTexture = '9'; speed = allSpeed; break;
+			case 10: enemyTexture = 'cf'; speed = 2.5 * allSpeed; break;
+			case 11: enemyTexture = '11'; speed = allSpeed; break;
+			case 12: enemyTexture = '12'; speed = allSpeed; break;
+			default: enemyTexture = '1'; speed = allSpeed; break;
 		}
-		var s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
+		s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
 		this.missileGroup.addChild(s);
-		if(this.score.counter.current > 0) {this.score.counter.current -= 15;}
+		if(this.score.counter.current > 0) {this.score.counter.current -= 18;}
 	}	
 
 }
@@ -298,7 +318,6 @@ var EnemyMissile = function (state, x, y, enemyTexture, speed){
 
 		//速度
 		this.x -= this.speed;
-		
 
 		if(this.health <= 0){
 			this.destroy();
@@ -381,6 +400,7 @@ loadingState.preload = function(){
 	this.addImage('bg6', 'assets/bg-layers/6.png');
 	this.addImage('bg7', 'assets/bg-layers/7.png');
 	this.addImage('pauseImage', 'assets/pauseImage.png')
+	this.addImage('loseImage', 'assets/pauseImage.png')
 	///////////////////////////////////
 	//SpriteSheet and Objects
 	this.addSpriteSheet('sw', 'assets/sw.png', 200, 225);
