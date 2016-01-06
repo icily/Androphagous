@@ -120,7 +120,7 @@ myState.create = function(){
 
 myState.onTimerCount = function () {
 	this.timerCount += 1;
-	if(!(this.timerCount%10)){
+	if(!(this.timerCount%15)){
 		allSpeed+= 4; //level up
 		var speedNum = Math.floor(Math.random()*5 + 1)
 			switch(speedNum){
