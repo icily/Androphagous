@@ -526,7 +526,6 @@ loadingState.preload = function(){
     this.game.stage.color = '#E0EDF1';
     
     this.logo = new Kiwi.GameObjects.StaticImage(this, this.textures['loadingImage'], 0, 0);
-    
     this.addChild(this.logo);
 
     this.logo.alpha = 0;
@@ -605,30 +604,52 @@ loadingState.switchToMain = function(){
 
 start.preload = function(){
     this.addImage('startImage', 'assets/start.png');
+    this.addImage('baseImage', 'assets/baseImage.png');
 }
 
 start.create = function(){
 	this.startImage = new Kiwi.GameObjects.StaticImage(this, this.textures['startImage'], 0, 0);
+	this.baseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['baseImage'], 0, 0);
+	this.addChild(this.baseImage);
+
 	this.addChild(this.startImage);
+    this.startImage.alpha = 0;
+    this.tweenIn = new Kiwi.Animations.Tween;
+    this.tweenIn = this.game.tweens.create(this.startImage);
+    this.tweenIn.to({ alpha: 1 }, 3000, Kiwi.Animations.Tweens.Easing.Linear.None, false);
+    this.tweenIn.start();
+
 	this.startImage.alpha = 1;
 
-    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'START', 300, 230 );
-    this.game.huds.defaultHUD.addWidget( this.myButton );
+	function myLoop () {           //  create a loop function
+	   setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+	   	  start.buttonAppear();
+	   }, 3000)
+	}
 
-    this.myButton.style.color = 'white';
-    this.myButton.style.opacity = '0.75';
-    this.myButton.style.fontSize = '2em';
-    this.myButton.style.fontWeight = 'bold';
-    this.myButton.style.padding = '0.5em 1em';
-    this.myButton.style.backgroundColor = 'black';
-    this.myButton.style.cursor = 'pointer';
-    this.myButton.style.fontFamily = 'Courier';
+	myLoop();
+	// this.buttonAppear();
+}
 
-    this.myButton.input.onDown.add( this.buttonPressed, this );
-    this.myButton.input.onUp.add( this.buttonReleased, this );
+start.buttonAppear = function(){
+	console.log('button appear.')
+	start.myButton = new Kiwi.HUD.Widget.Button( this.game, 'START', 300, 230 );
+    start.game.huds.defaultHUD.addWidget( this.myButton );
 
-    this.myButton.input.onOver.add( this.buttonOver, this );
-    this.myButton.input.onOut.add( this.buttonOut, this );
+    start.myButton.style.color = 'white';
+    start.myButton.style.opacity = '0.75';
+    start.myButton.style.fontSize = '2em';
+    start.myButton.style.fontWeight = 'bold';
+    start.myButton.style.padding = '0.5em 1em';
+    start.myButton.style.backgroundColor = 'black';
+    start.myButton.style.cursor = 'pointer';
+    start.myButton.style.fontFamily = 'Courier';
+
+    start.myButton.input.onDown.add( this.buttonPressed, this );
+    start.myButton.input.onUp.add( this.buttonReleased, this );
+
+    start.myButton.input.onOver.add( this.buttonOver, this );
+    start.myButton.input.onOut.add( this.buttonOut, this );
 }
 
 start.buttonPressed = function() {
