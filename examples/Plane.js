@@ -1,11 +1,13 @@
-var myGame = new Kiwi.Game("testGameContainer","testGame",myState,{plugins:["LEAPController"]});
+var myGame = new Kiwi.Game("GameContainer","Game",myState,{plugins:["LEAPController"]});
 var myState = new Kiwi.State('myState');
 var loadingState = new Kiwi.State('loadingState');
 var preloader = new Kiwi.State('preloader');
 var lose = new Kiwi.State('lose');
+var win = new Kiwi.State('win');
 var start = new Kiwi.State('start');
 var s;
 var allSpeed = 2;
+var eatNum = 0;
 
 myState.preload = function(){
 	Kiwi.State.prototype.preload.call(this);
@@ -62,7 +64,7 @@ myState.create = function(){
     	this.bg7.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg7'], i*434, 0, true));//bg7
     }    
     for(var i = 0; i < 5; i++){
-    	this.bg6.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg6'], i*346, 185, true));//bg6
+    	this.bg6.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg6'], i*800, 0, true));//bg6
     }    
     for(var i = 0; i < 10; i++){
     	this.bg5.addChild(new Kiwi.GameObjects.Sprite(this, this.textures['bg5'], i*96, 253, true));//bg5
@@ -112,12 +114,14 @@ myState.create = function(){
 
 	this.score = new Kiwi.HUD.Widget.BasicScore( this.game, 50, 50, 0 );
 	this.score.counter.current = 1500;
+
+	//Text
 }
 
 myState.onTimerCount = function () {
 	this.timerCount += 1;
 	if(!(this.timerCount%10)){
-		allSpeed*=1.2; //level up
+		allSpeed+= 1.2; //level up
 		var speedNum = Math.floor(Math.random()*5 + 1)
 			switch(speedNum){
 				case 1: this.speed1.play('default', true); break;
@@ -168,6 +172,10 @@ myState.update = function(){
 
 
 myState.checkScore = function(){
+	if(eatNum >= 100){
+		this.game.states.switchState('win');
+		this.healthBar.style.backgroundColor = '';
+	}
 	if(this.score.counter.current <= 0){
 		this.game.states.switchState('lose');
     	this.healthBar.style.backgroundColor = '';
@@ -186,6 +194,9 @@ lose.create = function(){
 	this.loseImage = new Kiwi.GameObjects.StaticImage(this, this.textures['loseImage'], 0, 0);
 	this.addChild(this.loseImage);
 	this.loseImage.alpha = 1;
+
+	this.text = new Kiwi.GameObjects.Textfield( this, "You ate " + eatNum + " Person.", 90, 340, "#FFF", 32, 'normal', 'Courier' );
+	this.addChild( this.text );
     
     this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 300, 430 );
     this.game.huds.defaultHUD.addWidget( this.myButton );
@@ -196,6 +207,7 @@ lose.create = function(){
     this.myButton.style.padding = '0.5em 1em';
     this.myButton.style.backgroundColor = 'black';
     this.myButton.style.cursor = 'pointer';
+    this.myButton.style.fontFamily = 'Courier';
 
     this.myButton.input.onDown.add( this.buttonPressed, this );
     this.myButton.input.onUp.add( this.buttonReleased, this );
@@ -222,6 +234,62 @@ lose.buttonOut = function() {
     this.myButton.style.backgroundColor = 'black';
 }
 
+win.preload = function(){
+    this.addImage('winImage', 'assets/win.png')
+}
+
+win.update = function(){
+    Kiwi.State.prototype.update.call(this);
+}
+
+win.create = function(){
+	this.winImage = new Kiwi.GameObjects.StaticImage(this, this.textures['winImage'], 0, 0);
+	this.addChild(this.winImage);
+	this.winImage.alpha = 1;
+
+	this.text = new Kiwi.GameObjects.Textfield( this, "ATE", 360, 65, "#FFF", 38, 'normal', 'Courier' );
+	this.text1 = new Kiwi.GameObjects.Textfield( this, eatNum, 358, 103, "#FF0", 38, 'bold', 'Courier' );
+	this.text2 = new Kiwi.GameObjects.Textfield( this, " Person", 305, 141, "#FF0", 38, 'normal', 'Courier' );
+	this.addChild( this.text );
+	this.addChild( this.text1 );
+	this.addChild( this.text2 );
+    
+    this.myButton = new Kiwi.HUD.Widget.Button( this.game, 'RESTART', 330, 390 );
+    this.game.huds.defaultHUD.addWidget( this.myButton );
+
+    this.myButton.style.color = 'white';
+    this.myButton.style.fontSize = '2em';
+    this.myButton.style.fontWeight = 'bold';
+    this.myButton.style.padding = '0.5em 1em';
+    this.myButton.style.backgroundColor = 'black';
+    this.myButton.style.cursor = 'pointer';
+    this.myButton.style.fontFamily = 'Courier';
+
+    this.myButton.input.onDown.add( this.buttonPressed, this );
+    this.myButton.input.onUp.add( this.buttonReleased, this );
+
+    this.myButton.input.onOver.add( this.buttonOver, this );
+    this.myButton.input.onOut.add( this.buttonOut, this );
+}
+
+win.buttonPressed = function() {
+    this.myButton.y = 435;
+	window.location.reload();
+}
+
+win.buttonReleased = function() {
+    this.myButton.y = 430;
+	console.log('button pressed');
+}
+
+win.buttonOver = function() {
+    this.myButton.style.backgroundColor = 'green';
+}
+
+win.buttonOut = function() {
+    this.myButton.style.backgroundColor = 'black';
+}
+
 
 myState.checkMissiles = function(){
 	var bombs = this.bombGroup.members;
@@ -229,6 +297,7 @@ myState.checkMissiles = function(){
 
 		for (var j = 0; j < missiles.length; j++){ //collides with enemy
 			if(this.plane.physics.overlaps(missiles[j])){
+				eatNum ++;
 				missiles[j].health --;
 				var yellNum = Math.floor(Math.random()*3 + 1)
 				switch(yellNum){
@@ -255,7 +324,7 @@ myState.checkMissiles = function(){
 
 myState.spawnMissile = function(){
 	if(this.control.controllerConnected){
-		var enemyNum = Math.floor(Math.random()*18 + 1);
+		var enemyNum = Math.floor(Math.random()*19 + 1);
 		var enemyTexture, speed;
 		switch(enemyNum){
 			case 1: enemyTexture = '1'; speed = allSpeed; break;
@@ -276,6 +345,7 @@ myState.spawnMissile = function(){
 			case 16: enemyTexture = '16'; speed = allSpeed; break;
 			case 17: enemyTexture = '17'; speed = allSpeed; break;
 			case 18: enemyTexture = '18'; speed = 1.5 * allSpeed; break;
+			case 19: enemyTexture = '19'; speed = 0.75 * allSpeed; break;
 			default: enemyTexture = '1'; speed = allSpeed; break;
 		}
 		s = new EnemyMissile(this, this.game.stage.width + 50, Math.random() * 450, enemyTexture, speed);
@@ -316,14 +386,14 @@ myState.updateParallax = function(){
 	}
 	//bg4
 	for(var i =0; i < this.bg4.members.length;i++){
-		this.bg4.members[i].transform.x -= 2*allSpeed;
+		this.bg4.members[i].transform.x -= 2;
 		if(this.bg4.members[i].transform.worldX <= -96){
 			this.bg4.members[i].transform.x = 96*(this.bg4.members.length - 1);
 		}
 	}
 	//bg5
 	for(var i =0; i < this.bg4.members.length;i++){
-		this.bg5.members[i].transform.x -= 1.5*allSpeed;		
+		this.bg5.members[i].transform.x -= 2;
 		if(this.bg5.members[i].transform.worldX <= -96){
 			this.bg5.members[i].transform.x = 96*(this.bg5.members.length - 1);
 		}
@@ -475,7 +545,7 @@ loadingState.preload = function(){
 	this.addImage('bg1', 'assets/bg-layers/giant4.gif');
 	this.addImage('bg2', 'assets/bg-layers/2.png');
 	this.addImage('bg3', 'assets/bg-layers/3.png');
-	this.addImage('bg4', 'assets/bg-layers/4.png');
+	// this.addImage('bg4', 'assets/bg-layers/4.png');
 	this.addImage('bg5', 'assets/bg-layers/5.png');
 	this.addImage('bg6', 'assets/bg-layers/6.png');
 	this.addImage('bg7', 'assets/bg-layers/7.png');
@@ -502,7 +572,8 @@ loadingState.preload = function(){
 	this.addSpriteSheet('16', 'assets/girl/6.png', 200, 225);
 	this.addSpriteSheet('17', 'assets/girl/7.png', 200, 225);
 	this.addSpriteSheet('18', 'assets/boy/rs.png', 200, 225);
-	
+	this.addSpriteSheet('19', 'assets/girl/cpf.png', 200, 225);
+
 	//audio
 	this.addAudio('yell', 'assets/audio/yell.mp3');
 	this.addAudio('pin', 'assets/audio/pin.mp3');
@@ -542,6 +613,7 @@ start.create = function(){
     this.myButton.style.padding = '0.5em 1em';
     this.myButton.style.backgroundColor = 'black';
     this.myButton.style.cursor = 'pointer';
+    this.myButton.style.fontFamily = 'Courier';
 
     this.myButton.input.onDown.add( this.buttonPressed, this );
     this.myButton.input.onUp.add( this.buttonReleased, this );
@@ -558,6 +630,7 @@ start.buttonReleased = function() {
     this.myButton.style.backgroundColor = '';
     this.game.states.switchState('myState');
     this.myButton.text = '';
+    this.myButton.style.padding = 0;
 }
 
 start.buttonOver = function() {
@@ -565,7 +638,7 @@ start.buttonOver = function() {
 }
 
 start.buttonOut = function() {
-    this.myButton.style.backgroundColor = '';
+    this.myButton.style.backgroundColor = 'black';
 }
 
 
@@ -574,4 +647,5 @@ myGame.states.addState(loadingState);
 myGame.states.addState(preloader);
 myGame.states.addState(myState);
 myGame.states.addState(lose);
+myGame.states.addState(win);
 myGame.states.switchState('preloader');
