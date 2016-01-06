@@ -261,7 +261,8 @@ var EnemyMissile = function (state, x, y, enemyTexture){
 	//this.box.hitbox = new Kiwi.Geom.Rectangle(50, 34, 50, 84);	
 	this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
 	this.health = 1;
-	this.scaleX = 1;
+	this.scaleX = 0.5;
+	this.scaleY = 0.5;
 
 	EnemyMissile.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
