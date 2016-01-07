@@ -97,7 +97,7 @@ myState.create = function(){
     //Audio
 	this.yell = new Kiwi.Sound.Audio(this.game, 'yell', 1, false);
 	this.yame = new Kiwi.Sound.Audio(this.game, 'yame', 1, false);
-	this.pin = new Kiwi.Sound.Audio(this.game, 'pin', 1, false);
+	this.pin = new Kiwi.Sound.Audio(this.game, 'pin', 0.9, false);
 	this.speed1 = new Kiwi.Sound.Audio(this.game, 'speed1', 1, false);
 	this.speed2 = new Kiwi.Sound.Audio(this.game, 'speed2', 1, false);
 	this.speed3 = new Kiwi.Sound.Audio(this.game, 'speed3', 1, false);
@@ -153,7 +153,7 @@ myState.update = function(){
 	//手細節effect
 	// this.plane.scaleX = this.control.hands[0].posZ / 300;
 	// this.plane.scaleY = this.control.hands[0].posZ / 300;
-	// this.plane.rotation = -1 * (this.control.hands[0].palmNormalX);
+	this.plane.rotation = -1 * (this.control.hands[0].palmNormalX);
 	// /
 
 	if(this.game.input.isDown){
@@ -463,6 +463,9 @@ var EnemyMissile = function (state, x, y, enemyTexture, speed){
 	this.health = 1;
 	this.scaleX = 0.6;
 	this.scaleY = 0.6;
+
+	if (this.enemyTexture === '10' || this.enemyTexture ==='18')
+		{this.scaleX *= -1;}
 
 	EnemyMissile.prototype.update = function(){
 		Kiwi.GameObjects.Sprite.prototype.update.call(this);
